@@ -2,34 +2,34 @@
     <div class="flex flex-col items-center gap-3">
         <img src="/icons/icon-192.png" alt="VisitaTrack" class="w-16 h-16 rounded-2xl shadow">
         <div class="text-center">
-            <h1 class="text-2xl font-bold text-gray-900">VisitaTrack</h1>
-            <p class="text-sm text-gray-500 mt-1">Portal del trabajador</p>
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">VisitaTrack</h1>
+            <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">Portal del trabajador</p>
         </div>
     </div>
 
     <form wire:submit="authenticate" class="w-full max-w-sm flex flex-col gap-4">
         @if ($loginError)
-            <div class="rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3">
+            <div class="rounded-lg bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 text-sm px-4 py-3">
                 {{ $loginError }}
             </div>
         @endif
 
         <div>
-            <label class="text-sm font-medium text-gray-700">Email</label>
+            <label class="text-sm font-medium text-gray-700 dark:text-slate-300">Email</label>
             <input type="email" wire:model="email" required autofocus
-                class="mt-1 w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
-            @error('email') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
+                class="mt-1 w-full px-3 py-2.5 rounded-lg border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+            @error('email') <p class="text-xs text-red-600 dark:text-red-400 mt-1">{{ $message }}</p> @enderror
         </div>
 
         <div>
-            <label class="text-sm font-medium text-gray-700">Contraseña</label>
+            <label class="text-sm font-medium text-gray-700 dark:text-slate-300">Contraseña</label>
             <input type="password" wire:model="password" required
-                class="mt-1 w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
-            @error('password') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
+                class="mt-1 w-full px-3 py-2.5 rounded-lg border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+            @error('password') <p class="text-xs text-red-600 dark:text-red-400 mt-1">{{ $message }}</p> @enderror
         </div>
 
-        <label class="flex items-center gap-2 text-sm text-gray-600">
-            <input type="checkbox" wire:model="remember" class="rounded border-gray-300">
+        <label class="flex items-center gap-2 text-sm text-gray-600 dark:text-slate-400">
+            <input type="checkbox" wire:model="remember" class="rounded border-gray-300 dark:border-slate-600 dark:bg-slate-800">
             Recordarme
         </label>
 
