@@ -7,7 +7,15 @@ use App\Livewire\Portal\VisitWizard;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::redirect('/', '/admin');
+Route::get('/', function () {
+    if (! Auth::check()) {
+        return redirect()->route('portal.login');
+    }
+
+    return Auth::user()->role === 'admin'
+        ? redirect('/admin')
+        : redirect()->route('portal.dashboard');
+});
 
 Route::prefix('portal')->name('portal.')->group(function () {
     Route::get('/login', Login::class)->middleware('guest')->name('login');
