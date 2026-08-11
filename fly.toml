@@ -1,0 +1,35 @@
+app = "visitatrack"
+primary_region = "gru"
+
+[build]
+
+[env]
+  APP_ENV = "production"
+  APP_NAME = "VisitaTrack"
+  APP_DEBUG = "false"
+  LOG_CHANNEL = "stack"
+  LOG_STACK = "stderr,database"
+  FILESYSTEM_DISK = "local"
+  VISITS_STORAGE_PATH = "/data/visits"
+  SESSION_DRIVER = "database"
+  CACHE_STORE = "database"
+  QUEUE_CONNECTION = "database"
+  DB_CONNECTION = "pgsql"
+
+[mounts]
+  source = "visitatrack_data"
+  destination = "/data"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
+
+[deploy]
+  release_command = "php artisan migrate --force"

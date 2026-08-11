@@ -1,0 +1,29 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: visitatrack-app
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8090:8000"
+    depends_on:
+      - db
+    command: php artisan serve --host=0.0.0.0 --port=8000
+
+  db:
+    image: postgres:16
+    container_name: visitatrack-db
+    environment:
+      POSTGRES_DB: visitatrack
+      POSTGRES_USER: visitatrack
+      POSTGRES_PASSWORD: visitatrack_local
+    ports:
+      - "5443:5432"
+    volumes:
+      - visitatrack_db_data:/var/lib/postgresql/data
+
+volumes:
+  visitatrack_db_data:
