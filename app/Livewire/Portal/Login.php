@@ -45,9 +45,10 @@ class Login extends Component
         $this->attemptLogin($this->email, $this->password);
     }
 
-    public function loginAsDemo(string $email, string $password): void
+    public function fillDemo(string $email, string $password): void
     {
-        $this->attemptLogin($email, $password);
+        $this->email = $email;
+        $this->password = $password;
     }
 
     protected function attemptLogin(string $email, string $password): void
