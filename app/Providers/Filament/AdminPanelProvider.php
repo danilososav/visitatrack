@@ -61,6 +61,15 @@ class AdminPanelProvider extends PanelProvider
                     .'<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />'
                     .'<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>'
                 ),
+            )
+            ->renderHook(
+                PanelsRenderHook::AUTH_LOGIN_FORM_BEFORE,
+                fn () => Blade::render(
+                    '<div class="rounded-lg border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/40 px-3 py-2 mb-4 text-xs text-amber-700 dark:text-amber-400">'
+                    .'🧪 Proyecto de portafolio, sin datos reales. '
+                    .'<a href="/portal/login" class="underline font-medium">Entrá con un usuario de prueba</a>.'
+                    .'</div>'
+                ),
             );
     }
 }
