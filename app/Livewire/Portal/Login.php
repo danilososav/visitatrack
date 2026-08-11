@@ -17,6 +17,24 @@ class Login extends Component
 
     public string $loginError = '';
 
+    /**
+     * @var array<int, array{label: string, description: string, email: string, password: string}>
+     */
+    public array $demoUsers = [
+        [
+            'label' => '👷 Trabajador demo',
+            'description' => 'Lucía Benítez — visitas y máquinas',
+            'email' => 'worker1@visitatrack.test',
+            'password' => 'password',
+        ],
+        [
+            'label' => '👷 Trabajador demo 2',
+            'description' => 'Marcos Ferreira — segundo usuario de prueba',
+            'email' => 'worker2@visitatrack.test',
+            'password' => 'password',
+        ],
+    ];
+
     public function authenticate(): void
     {
         $this->validate([

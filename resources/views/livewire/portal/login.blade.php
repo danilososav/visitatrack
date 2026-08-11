@@ -7,6 +7,28 @@
         </div>
     </div>
 
+    <div class="w-full max-w-sm rounded-xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/40 px-4 py-3">
+        <p class="text-sm font-semibold text-amber-800 dark:text-amber-300">🧪 Entorno de demostración</p>
+        <p class="text-xs text-amber-700 dark:text-amber-400 mt-1">
+            Proyecto de portafolio, sin datos reales. Elegí un usuario de prueba para autocompletar el acceso.
+        </p>
+
+        <div class="mt-3 flex flex-col gap-2">
+            @foreach ($demoUsers as $demo)
+                <button type="button"
+                    x-on:click="$wire.email = '{{ $demo['email'] }}'; $wire.password = '{{ $demo['password'] }}'"
+                    class="w-full text-left rounded-lg border border-amber-300 dark:border-amber-700 bg-white dark:bg-slate-800 hover:bg-amber-100 dark:hover:bg-slate-700 transition-colors px-3 py-2">
+                    <span class="text-sm font-semibold text-gray-900 dark:text-white">{{ $demo['label'] }}</span>
+                    <span class="block text-xs text-gray-500 dark:text-slate-400">{{ $demo['description'] }}</span>
+                </button>
+            @endforeach
+        </div>
+
+        <p class="text-xs text-amber-700 dark:text-amber-400 mt-3">
+            ¿Sos administrador? <a href="/admin/login" class="underline font-medium">Ingresá al panel admin</a>.
+        </p>
+    </div>
+
     <form wire:submit="authenticate" class="w-full max-w-sm flex flex-col gap-4">
         @if ($loginError)
             <div class="rounded-lg bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 text-sm px-4 py-3">
