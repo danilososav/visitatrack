@@ -61,10 +61,6 @@ class AdminPanelProvider extends PanelProvider
                     .'<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />'
                     .'<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>'
                 ),
-            )
-            ->renderHook(
-                PanelsRenderHook::AUTH_LOGIN_FORM_BEFORE,
-                fn () => view('filament.auth.demo-login'),
             );
     }
 }

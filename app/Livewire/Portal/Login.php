@@ -28,9 +28,9 @@ class Login extends Component
             'password' => 'password',
         ],
         [
-            'label' => '👷 Trabajador demo 2',
-            'description' => 'Marcos Ferreira — segundo usuario de prueba',
-            'email' => 'worker2@visitatrack.test',
+            'label' => '👑 Administrador demo',
+            'description' => 'Acceso total al panel admin',
+            'email' => 'admin@visitatrack.test',
             'password' => 'password',
         ],
     ];
@@ -42,13 +42,29 @@ class Login extends Component
             'password' => ['required', 'string'],
         ]);
 
-        if (! Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
+        $this->attemptLogin($this->email, $this->password);
+    }
+
+    public function loginAsDemo(string $email, string $password): void
+    {
+        $this->attemptLogin($email, $password);
+    }
+
+    protected function attemptLogin(string $email, string $password): void
+    {
+        if (! Auth::attempt(['email' => $email, 'password' => $password], $this->remember)) {
             $this->loginError = 'Email o contraseña incorrectos.';
 
             return;
         }
 
         request()->session()->regenerate();
+
+        if (Auth::user()->role === 'admin') {
+            $this->redirect('/admin', navigate: false);
+
+            return;
+        }
 
         $this->redirectRoute('portal.dashboard', navigate: true);
     }
