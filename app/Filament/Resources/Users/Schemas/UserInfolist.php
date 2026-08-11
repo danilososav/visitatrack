@@ -18,8 +18,6 @@ class UserInfolist
                     ->badge()
                     ->formatStateUsing(fn (string $state) => $state === 'admin' ? 'Administrador' : 'Trabajador'),
                 TextEntry::make('phone')->label('Teléfono')->placeholder('-'),
-                TextEntry::make('base_lat')->label('Latitud base')->numeric()->placeholder('-'),
-                TextEntry::make('base_lng')->label('Longitud base')->numeric()->placeholder('-'),
                 TextEntry::make('created_at')->label('Creado')->dateTime()->placeholder('-'),
             ]);
     }

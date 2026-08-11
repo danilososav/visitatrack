@@ -21,6 +21,11 @@ class ListVisits extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('viewMap')
+                ->label('Ver mapa')
+                ->icon('heroicon-o-map')
+                ->color('gray')
+                ->url(fn () => VisitResource::getUrl('map')),
             Action::make('exportExcel')
                 ->label('Exportar Excel')
                 ->icon('heroicon-o-table-cells')

@@ -61,6 +61,9 @@ class AdminPanelProvider extends PanelProvider
                 fn () => Blade::render(
                     '<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />'
                     .'<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>'
+                    .'<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />'
+                    .'<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />'
+                    .'<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>'
                 ),
             );
     }

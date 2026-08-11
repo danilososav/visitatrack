@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Visits;
 use App\Filament\Resources\Visits\Pages\CreateVisit;
 use App\Filament\Resources\Visits\Pages\EditVisit;
 use App\Filament\Resources\Visits\Pages\ListVisits;
+use App\Filament\Resources\Visits\Pages\VisitsMap;
 use App\Filament\Resources\Visits\Schemas\VisitForm;
 use App\Filament\Resources\Visits\Tables\VisitsTable;
 use App\Models\Visit;
@@ -61,6 +62,7 @@ class VisitResource extends Resource
     {
         return [
             'index' => ListVisits::route('/'),
+            'map' => VisitsMap::route('/mapa'),
             'create' => CreateVisit::route('/create'),
             'edit' => EditVisit::route('/{record}/edit'),
         ];

@@ -43,6 +43,9 @@ class VisitForm
                                 Visit::STATUS_COMPLETED => 'Completada',
                                 Visit::STATUS_CANCELLED => 'Cancelada',
                             ])
+                            ->disabled()
+                            ->dehydrated(false)
+                            ->helperText('El estado avanza solo. Lo actualiza el trabajador al confirmar cada paso, o la acción Aprobar/Cancelar del admin.')
                             ->required(),
                         Select::make('company_id')
                             ->label('Empresa')
@@ -62,28 +65,29 @@ class VisitForm
                     ]),
 
                 Section::make('Checkpoints GPS')
+                    ->description('Se registran automáticamente desde el celular del trabajador en cada paso — no son editables.')
                     ->columns(1)
                     ->collapsed()
                     ->components([
                         Grid::make(3)->components([
-                            DateTimePicker::make('departed_base_at')->label('Salida de base'),
-                            TextInput::make('departed_base_lat')->label('Lat.')->numeric(),
-                            TextInput::make('departed_base_lng')->label('Lng.')->numeric(),
+                            DateTimePicker::make('departed_base_at')->label('Salida de base')->disabled(),
+                            TextInput::make('departed_base_lat')->label('Lat.')->numeric()->disabled(),
+                            TextInput::make('departed_base_lng')->label('Lng.')->numeric()->disabled(),
                         ]),
                         Grid::make(3)->components([
-                            DateTimePicker::make('arrived_client_at')->label('Llegada al destino'),
-                            TextInput::make('arrived_client_lat')->label('Lat.')->numeric(),
-                            TextInput::make('arrived_client_lng')->label('Lng.')->numeric(),
+                            DateTimePicker::make('arrived_client_at')->label('Llegada al destino')->disabled(),
+                            TextInput::make('arrived_client_lat')->label('Lat.')->numeric()->disabled(),
+                            TextInput::make('arrived_client_lng')->label('Lng.')->numeric()->disabled(),
                         ]),
                         Grid::make(3)->components([
-                            DateTimePicker::make('departed_client_at')->label('Salida del destino'),
-                            TextInput::make('departed_client_lat')->label('Lat.')->numeric(),
-                            TextInput::make('departed_client_lng')->label('Lng.')->numeric(),
+                            DateTimePicker::make('departed_client_at')->label('Salida del destino')->disabled(),
+                            TextInput::make('departed_client_lat')->label('Lat.')->numeric()->disabled(),
+                            TextInput::make('departed_client_lng')->label('Lng.')->numeric()->disabled(),
                         ]),
                         Grid::make(3)->components([
-                            DateTimePicker::make('arrived_base_at')->label('Llegada a base'),
-                            TextInput::make('arrived_base_lat')->label('Lat.')->numeric(),
-                            TextInput::make('arrived_base_lng')->label('Lng.')->numeric(),
+                            DateTimePicker::make('arrived_base_at')->label('Llegada a base')->disabled(),
+                            TextInput::make('arrived_base_lat')->label('Lat.')->numeric()->disabled(),
+                            TextInput::make('arrived_base_lng')->label('Lng.')->numeric()->disabled(),
                         ]),
                     ]),
             ]);

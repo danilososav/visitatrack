@@ -119,6 +119,11 @@ class Visit extends Model
         return $this->hasMany(VisitTrackPoint::class)->orderBy('recorded_at');
     }
 
+    public function destinationName(): ?string
+    {
+        return $this->company?->name ?? $this->machine?->name;
+    }
+
     public function totalTrackDistanceKm(): float
     {
         $points = $this->trackPoints;

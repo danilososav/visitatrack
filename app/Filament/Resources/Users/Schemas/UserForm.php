@@ -16,7 +16,7 @@ class UserForm
                 TextInput::make('name')
                     ->required(),
                 TextInput::make('email')
-                    ->label('Email address')
+                    ->label('Email')
                     ->email()
                     ->required()
                     ->unique(ignoreRecord: true),
@@ -30,12 +30,6 @@ class UserForm
                 TextInput::make('phone')
                     ->label('Teléfono')
                     ->tel(),
-                TextInput::make('base_lat')
-                    ->label('Latitud base')
-                    ->numeric(),
-                TextInput::make('base_lng')
-                    ->label('Longitud base')
-                    ->numeric(),
                 TextInput::make('password')
                     ->password()
                     ->label('Contraseña')

@@ -44,6 +44,74 @@
 
     <main class="flex-1 px-5 py-6 max-w-lg w-full mx-auto">
 
+        {{-- Step tracker + job summary — visible on every step once the visit exists --}}
+        @if ($step !== 'setup' && $visit)
+            @php
+                $destino = $visit->destinationName() ?? 'destino';
+                $nodes = [
+                    ['icon' => '🚗', 'label' => 'Salida', 'done' => (bool) $visit->departed_base_at, 'time' => $visit->departed_base_at],
+                    ['icon' => '📍', 'label' => $destino, 'done' => (bool) $visit->arrived_client_at, 'time' => $visit->arrived_client_at],
+                    ['icon' => '🏁', 'label' => 'Salida', 'done' => (bool) $visit->departed_client_at, 'time' => $visit->departed_client_at],
+                    ['icon' => '🏠', 'label' => 'Llegada', 'done' => (bool) $visit->arrived_base_at, 'time' => $visit->arrived_base_at],
+                ];
+                $activeIndex = match ($step) {
+                    'traveling_to' => 0,
+                    'at_client' => 1,
+                    'traveling_back' => 2,
+                    default => 3,
+                };
+            @endphp
+            <div class="bg-white rounded-2xl border border-gray-100 p-4 mb-4">
+                <p class="text-xs text-gray-400 mb-3">{{ $destino }} @if($visit->ov_number) · OV {{ $visit->ov_number }} @endif</p>
+                <div class="flex items-center">
+                    @foreach ($nodes as $i => $node)
+                        <div class="flex flex-col items-center flex-1">
+                            <div @class([
+                                'w-10 h-10 rounded-full flex items-center justify-center text-lg border-2',
+                                'bg-blue-600 border-blue-600 text-white' => $i === $activeIndex,
+                                'bg-green-500 border-green-500 text-white' => $node['done'] && $i !== $activeIndex,
+                                'bg-gray-100 border-gray-200 text-gray-400' => ! $node['done'] && $i !== $activeIndex,
+                            ])>{{ $node['icon'] }}</div>
+                            <p @class(['text-[10px] mt-1 text-center leading-tight', 'text-blue-600 font-semibold' => $i === $activeIndex, 'text-gray-400' => $i !== $activeIndex])>
+                                {{ \Illuminate\Support\Str::limit($node['label'], 12) }}
+                            </p>
+                        </div>
+                        @if ($i < count($nodes) - 1)
+                            <div @class(['flex-1 h-0.5 -mt-5', 'bg-green-500' => $node['done'], 'bg-gray-200' => ! $node['done']])></div>
+                        @endif
+                    @endforeach
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-gray-100 p-4 mb-4 text-sm">
+                <div class="flex flex-wrap gap-x-4 gap-y-1 text-gray-600">
+                    @if ($visit->ov_number)<span>N° OV: <strong class="text-gray-900">{{ $visit->ov_number }}</strong></span>@endif
+                    @if ($visit->ot_number)<span>N° OT: <strong class="text-gray-900">{{ $visit->ot_number }}</strong></span>@endif
+                </div>
+                @if ($visit->activities->isNotEmpty())
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                        @foreach ($visit->activities as $activity)
+                            <span class="text-[11px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full">{{ $activity->name }}</span>
+                        @endforeach
+                    </div>
+                @endif
+                @if ($visit->notes)
+                    <p class="text-gray-500 text-xs mt-2">{{ $visit->notes }}</p>
+                @endif
+
+                <div class="mt-3 pt-3 border-t border-gray-100 flex flex-col gap-1">
+                    @foreach ($nodes as $node)
+                        @if ($node['time'])
+                            <div class="flex items-center justify-between text-xs text-gray-500">
+                                <span>{{ $node['icon'] }} {{ $node['label'] === $destino ? 'Llegada' : $node['label'] }}</span>
+                                <span class="font-medium text-gray-700">{{ $node['time']->format('H:i:s') }}</span>
+                            </div>
+                        @endif
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
         {{-- STEP 0 — setup form, before departing --}}
         @if ($step === 'setup')
             <div class="flex flex-col gap-5">
@@ -133,10 +201,19 @@
 
         {{-- STEP 1 — traveling to destination --}}
         @if ($step === 'traveling_to')
-            <div class="flex flex-col gap-6 items-center text-center pt-10"
+            <div class="flex flex-col gap-6 items-center text-center pt-4"
                 x-data="trackBuffer('to_client')" x-init="start()">
                 <div class="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center text-3xl">🚗</div>
-                <p class="text-gray-600">Viajando hacia {{ $visit?->company?->name ?? $visit?->machine?->name }}</p>
+                <p class="text-gray-600">Viajando hacia {{ $visit?->destinationName() }}</p>
+
+                <div class="flex items-center gap-2 text-xs" :class="active ? 'text-green-600' : 'text-gray-400'">
+                    <span class="relative flex h-2 w-2">
+                        <span x-show="active" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2" :class="active ? 'bg-green-500' : 'bg-gray-300'"></span>
+                    </span>
+                    <span x-text="active ? 'GPS activo · ' + totalSent + ' puntos guardados' : 'Esperando señal GPS...'"></span>
+                </div>
+
                 <button type="button" @click="capture('confirmArrival')"
                     class="w-full py-4 rounded-2xl bg-blue-600 hover:bg-blue-700 active:scale-95 transition-all text-white font-bold shadow-lg shadow-blue-600/30">
                     Confirmar llegada
@@ -146,9 +223,9 @@
 
         {{-- STEP 2 — at the destination --}}
         @if ($step === 'at_client')
-            <div class="flex flex-col gap-6 items-center text-center pt-10">
+            <div class="flex flex-col gap-6 items-center text-center pt-4">
                 <div class="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center text-3xl">📍</div>
-                <p class="text-gray-600">En {{ $visit?->company?->name ?? $visit?->machine?->name }}</p>
+                <p class="text-gray-600">En {{ $visit?->destinationName() }}</p>
 
                 <div class="w-full text-left">
                     <label class="text-sm font-medium text-gray-700">Fotos (opcional)</label>
@@ -173,10 +250,19 @@
 
         {{-- STEP 3 — traveling back to base --}}
         @if ($step === 'traveling_back')
-            <div class="flex flex-col gap-6 items-center text-center pt-10"
+            <div class="flex flex-col gap-6 items-center text-center pt-4"
                 x-data="trackBuffer('to_base')" x-init="start()">
                 <div class="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center text-3xl">🚗</div>
                 <p class="text-gray-600">Volviendo a la base</p>
+
+                <div class="flex items-center gap-2 text-xs" :class="active ? 'text-green-600' : 'text-gray-400'">
+                    <span class="relative flex h-2 w-2">
+                        <span x-show="active" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2" :class="active ? 'bg-green-500' : 'bg-gray-300'"></span>
+                    </span>
+                    <span x-text="active ? 'GPS activo · ' + totalSent + ' puntos guardados' : 'Esperando señal GPS...'"></span>
+                </div>
+
                 <button type="button" @click="capture('confirmReturn')"
                     class="w-full py-4 rounded-2xl bg-blue-600 hover:bg-blue-700 active:scale-95 transition-all text-white font-bold shadow-lg shadow-blue-600/30">
                     Confirmar llegada a base
@@ -225,7 +311,7 @@
 
         {{-- Finished states — read-only summary --}}
         @if (in_array($step, ['completed', 'cancelled']))
-            <div class="flex flex-col gap-4 items-center text-center pt-10">
+            <div class="flex flex-col gap-4 items-center text-center pt-4">
                 <div class="w-20 h-20 rounded-full flex items-center justify-center text-3xl
                     {{ $step === 'completed' ? 'bg-green-100' : 'bg-red-100' }}">
                     {{ $step === 'completed' ? '✅' : '✕' }}
@@ -244,18 +330,21 @@
 <script>
     Alpine.data('trackBuffer', (leg) => ({
         buffer: [],
+        active: false,
+        totalSent: 0,
         watchId: null,
         start() {
             if (!navigator.geolocation) return;
             this.watchId = navigator.geolocation.watchPosition(
                 (pos) => {
+                    this.active = true;
                     this.buffer.push({
                         lat: pos.coords.latitude,
                         lng: pos.coords.longitude,
                         ts: new Date().toISOString(),
                     });
                 },
-                () => {},
+                () => { this.active = false; },
                 { enableHighAccuracy: true }
             );
             this.interval = setInterval(() => this.flush(leg), 25000);
@@ -264,6 +353,7 @@
         flush(leg) {
             if (this.buffer.length === 0) return;
             const points = this.buffer;
+            this.totalSent += points.length;
             this.buffer = [];
             $wire.call('recordTrackPoints', points, leg);
         },

@@ -78,6 +78,11 @@ class VisitWizard extends Component
         return Activity::where('is_active', true)->orderBy('sort_order')->get();
     }
 
+    public function getTrackPointsCountProperty(): int
+    {
+        return $this->visit ? $this->visit->trackPoints()->count() : 0;
+    }
+
     public function updatedOvNumber(): void
     {
         $this->ovHint = null;
