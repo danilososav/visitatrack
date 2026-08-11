@@ -1,5 +1,5 @@
 <div class="min-h-screen bg-gray-50 dark:bg-slate-900 flex flex-col">
-    <header class="flex items-center justify-between px-5 py-4 bg-white dark:bg-slate-800 border-b border-gray-100 dark:border-slate-700">
+    <header class="flex items-center justify-between pl-5 pr-16 py-4 bg-white dark:bg-slate-800 border-b border-gray-100 dark:border-slate-700">
         <div>
             <p class="text-xs text-gray-400 dark:text-slate-500">Hola,</p>
             <p class="font-semibold text-gray-900 dark:text-white">{{ auth()->user()->name }}</p>
