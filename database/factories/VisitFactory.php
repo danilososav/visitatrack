@@ -17,8 +17,8 @@ class VisitFactory extends Factory
 
     public function definition(): array
     {
-        $baseLat = fake()->latitude(-35, -20);
-        $baseLng = fake()->longitude(-65, -50);
+        $baseLat = fake()->latitude(-27.5, -22);
+        $baseLng = fake()->longitude(-62, -54.3);
         $clientLat = $baseLat + fake()->randomFloat(5, -0.15, 0.15);
         $clientLng = $baseLng + fake()->randomFloat(5, -0.15, 0.15);
 

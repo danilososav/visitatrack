@@ -12,15 +12,19 @@ class ActivityInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('name'),
+                TextEntry::make('name')->label('Nombre'),
                 IconEntry::make('is_active')
+                    ->label('Activa')
                     ->boolean(),
                 TextEntry::make('sort_order')
+                    ->label('Orden')
                     ->numeric(),
                 TextEntry::make('created_at')
+                    ->label('Creado')
                     ->dateTime()
                     ->placeholder('-'),
                 TextEntry::make('updated_at')
+                    ->label('Actualizado')
                     ->dateTime()
                     ->placeholder('-'),
             ]);

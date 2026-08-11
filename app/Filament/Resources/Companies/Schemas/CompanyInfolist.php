@@ -11,20 +11,26 @@ class CompanyInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('name'),
+                TextEntry::make('name')->label('Nombre'),
                 TextEntry::make('address')
+                    ->label('Dirección')
                     ->placeholder('-'),
                 TextEntry::make('contact_name')
+                    ->label('Contacto')
                     ->placeholder('-'),
                 TextEntry::make('contact_phone')
+                    ->label('Teléfono')
                     ->placeholder('-'),
                 TextEntry::make('notes')
+                    ->label('Notas')
                     ->placeholder('-')
                     ->columnSpanFull(),
                 TextEntry::make('created_at')
+                    ->label('Creado')
                     ->dateTime()
                     ->placeholder('-'),
                 TextEntry::make('updated_at')
+                    ->label('Actualizado')
                     ->dateTime()
                     ->placeholder('-'),
             ]);

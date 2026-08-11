@@ -12,17 +12,22 @@ class MachineInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('name'),
+                TextEntry::make('name')->label('Nombre'),
                 TextEntry::make('code')
+                    ->label('Código')
                     ->placeholder('-'),
                 TextEntry::make('category')
+                    ->label('Categoría')
                     ->placeholder('-'),
                 IconEntry::make('is_active')
+                    ->label('Activa')
                     ->boolean(),
                 TextEntry::make('created_at')
+                    ->label('Creado')
                     ->dateTime()
                     ->placeholder('-'),
                 TextEntry::make('updated_at')
+                    ->label('Actualizado')
                     ->dateTime()
                     ->placeholder('-'),
             ]);

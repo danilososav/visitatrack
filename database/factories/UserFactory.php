@@ -31,10 +31,17 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
             'role' => 'worker',
-            'phone' => fake()->phoneNumber(),
-            'base_lat' => fake()->latitude(-35, -20),
-            'base_lng' => fake()->longitude(-65, -50),
+            'phone' => $this->paraguayPhone(),
+            'base_lat' => fake()->latitude(-27.5, -22),
+            'base_lng' => fake()->longitude(-62, -54.3),
         ];
+    }
+
+    private function paraguayPhone(): string
+    {
+        $prefijo = fake()->randomElement(['981', '982', '983', '984', '985', '991', '994', '995']);
+
+        return '+595 '.$prefijo.' '.fake()->numerify('###').' '.fake()->numerify('###');
     }
 
     /**

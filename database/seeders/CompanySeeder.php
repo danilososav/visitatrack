@@ -10,8 +10,14 @@ class CompanySeeder extends Seeder
     public function run(): void
     {
         collect([
-            'Acme Corp', 'Cliente Demo S.A.', 'Globex Industries', 'Constructora Modelo',
-            'Distribuidora Central', 'Grupo Horizonte', 'Comercial del Sur', 'Metalúrgica Ejemplo',
+            'Ferretería San Roque',
+            'Supermercados La Paraguaya',
+            'Transportes Ñandutí',
+            'Distribuidora Itapúa',
+            'Comercial Guaraní S.A.',
+            'Textiles Encarnación',
+            'Agroindustrial del Este',
+            'Construcciones Yguazú',
         ])->each(fn (string $name) => Company::factory()->create(['name' => $name]));
     }
 }

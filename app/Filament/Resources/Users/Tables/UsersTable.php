@@ -30,6 +30,7 @@ class UsersTable
                     ->searchable()
                     ->toggleable(),
                 TextColumn::make('created_at')
+                    ->label('Creado')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
